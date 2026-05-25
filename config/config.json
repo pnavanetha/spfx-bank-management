@@ -1,0 +1,18 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/spfx-build/config.2.0.schema.json",
+  "version": "2.0",
+  "bundles": {
+    "bank-management-web-part": {
+      "components": [
+        {
+          "entrypoint": "./lib/webparts/bankManagement/BankManagementWebPart.js",
+          "manifest": "./src/webparts/bankManagement/BankManagementWebPart.manifest.json"
+        }
+      ]
+    }
+  },
+  "externals": {},
+  "localizedResources": {
+    "BankManagementWebPartStrings": "lib/webparts/bankManagement/loc/{locale}.js"
+  }
+}

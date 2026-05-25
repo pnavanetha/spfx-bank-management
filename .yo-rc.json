@@ -1,0 +1,18 @@
+{
+  "@microsoft/generator-sharepoint": {
+    "plusBeta": false,
+    "isCreatingSolution": true,
+    "nodeVersion": "22.14.0",
+    "sdksVersions": {},
+    "version": "1.21.1",
+    "libraryName": "bank-management",
+    "libraryId": "053f5643-21b1-4403-92b9-9cd70d3fc77a",
+    "environment": "spo",
+    "packageManager": "npm",
+    "solutionName": "bankManagement",
+    "solutionShortDescription": "bankManagement description",
+    "skipFeatureDeployment": true,
+    "isDomainIsolated": false,
+    "componentType": "webpart"
+  }
+}
