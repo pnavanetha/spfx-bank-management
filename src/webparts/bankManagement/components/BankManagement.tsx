@@ -23,6 +23,8 @@ const BankManagement: React.FC<IBankManagementProps> = ({ context }) => {
 
   const [customers, setCustomers] = useState<IBankItem[]>([]);
 
+  const [editId, setEditId] = useState<number | null>(null);
+
   const [formData, setFormData] = useState<IBankItem>({
 
     CustomerName: '',
@@ -86,33 +88,113 @@ const BankManagement: React.FC<IBankManagementProps> = ({ context }) => {
     });
   };
 
+  // EDIT FUNCTION
+
+  const editCustomer = (item: IBankItem): void => {
+
+    setEditId(item.Id!);
+
+    setFormData({
+
+      CustomerName: item.CustomerName,
+
+      Email: item.Email,
+
+      PhoneNumber: item.PhoneNumber,
+
+      AccountType: item.AccountType,
+
+      Balance: item.Balance,
+
+      IsActive: item.IsActive,
+
+      Branch: item.Branch,
+
+      DateOfJoining: item.DateOfJoining
+    });
+  };
+
+  // SAVE FUNCTION
+
   const saveData = async (): Promise<void> => {
 
     try {
 
-      await sp!.web.lists
-        .getByTitle('BankCustomers')
-        .items
-        .add({
+      if (editId) {
 
-          CustomerName: formData.CustomerName,
+        // UPDATE
 
-          Email: formData.Email,
+        await sp!.web.lists
+          .getByTitle('BankCustomers')
+          .items
+          .getById(editId)
+          .update({
 
-          PhoneNumber: formData.PhoneNumber,
+            CustomerName: formData.CustomerName,
 
-          AccountType: formData.AccountType,
+            Email: formData.Email,
 
-          Balance: formData.Balance,
+            PhoneNumber: formData.PhoneNumber,
 
-          IsActive: formData.IsActive,
+            AccountType: formData.AccountType,
 
-          Branch: formData.Branch,
+            Balance: formData.Balance,
 
-          DateOfJoining: formData.DateOfJoining
-        });
+            IsActive: formData.IsActive,
 
-      alert('Customer Added Successfully');
+            Branch: formData.Branch,
+
+            DateOfJoining: formData.DateOfJoining
+          });
+
+        alert('Customer Updated Successfully');
+
+        setEditId(null);
+
+      } else {
+
+        // ADD
+
+        await sp!.web.lists
+          .getByTitle('BankCustomers')
+          .items
+          .add({
+
+            CustomerName: formData.CustomerName,
+
+            Email: formData.Email,
+
+            PhoneNumber: formData.PhoneNumber,
+
+            AccountType: formData.AccountType,
+
+            Balance: formData.Balance,
+
+            IsActive: formData.IsActive,
+
+            Branch: formData.Branch,
+
+            DateOfJoining: formData.DateOfJoining
+          });
+
+        alert('Customer Added Successfully');
+      }
+
+      // CLEAR FORM
+
+      setFormData({
+
+        CustomerName: '',
+        Email: '',
+        PhoneNumber: 0,
+        AccountType: '',
+        Balance: 0,
+        IsActive: false,
+        Branch: '',
+        DateOfJoining: ''
+      });
+
+      // REFRESH TABLE
 
       getCustomers();
 
@@ -164,8 +246,15 @@ const BankManagement: React.FC<IBankManagementProps> = ({ context }) => {
           onChange={handleChange}
         >
           <option value=''>Select Account</option>
-          <option value='Savings'>Savings</option>
-          <option value='Current'>Current</option>
+
+          <option value='Savings'>
+            Savings
+          </option>
+
+          <option value='Current'>
+            Current
+          </option>
+
         </select>
 
         <input
@@ -182,8 +271,15 @@ const BankManagement: React.FC<IBankManagementProps> = ({ context }) => {
           onChange={handleChange}
         >
           <option value=''>Select Branch</option>
-          <option value='Hyderabad'>Hyderabad</option>
-          <option value='Chennai'>Chennai</option>
+
+          <option value='Hyderabad'>
+            Hyderabad
+          </option>
+
+          <option value='Chennai'>
+            Chennai
+          </option>
+
         </select>
 
         <input
@@ -194,13 +290,16 @@ const BankManagement: React.FC<IBankManagementProps> = ({ context }) => {
         />
 
         <label>
+
           <input
             type='checkbox'
             name='IsActive'
             checked={formData.IsActive}
             onChange={handleChange}
           />
+
           Active
+
         </label>
 
       </div>
@@ -208,13 +307,28 @@ const BankManagement: React.FC<IBankManagementProps> = ({ context }) => {
       <br />
 
       <button onClick={saveData}>
-        Save
+
+        {
+          editId ? 'Update Customer' : 'Save Customer'
+        }
+
+      </button>
+      <button onClick={() => setFormData({
+        CustomerName: '',
+        Email: '',
+        PhoneNumber: 0,
+        AccountType: '',
+        Balance: 0,
+        IsActive: false,
+        Branch: '',
+        DateOfJoining: ''
+      })}>
+        Clear
       </button>
 
       <hr />
 
       <table
-        // border={1}
         cellPadding={10}
         style={{ width: '100%' }}
       >
@@ -222,11 +336,16 @@ const BankManagement: React.FC<IBankManagementProps> = ({ context }) => {
         <thead>
 
           <tr>
-            <th>Name</th>
+
+            <th>Customer Name</th>
             <th>Email</th>
-            <th>Phone</th>
-            <th>Account</th>
+            <th>Phone Number</th>
+            <th>Account Type</th>
             <th>Balance</th>
+            <th>Branch</th>
+            <th>IsActive</th>
+            <th>Actions</th>
+
           </tr>
 
         </thead>
@@ -247,6 +366,19 @@ const BankManagement: React.FC<IBankManagementProps> = ({ context }) => {
                 <td>{item.AccountType}</td>
 
                 <td>{item.Balance}</td>
+                <td>{item.Branch}</td>
+
+                <td>{item.IsActive ? 'Yes' : 'No'}</td>
+
+                <td>
+
+                  <button
+                    onClick={() => editCustomer(item)}
+                  >
+                    Edit
+                  </button>
+
+                </td>
 
               </tr>
             ))
