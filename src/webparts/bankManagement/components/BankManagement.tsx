@@ -26,19 +26,12 @@ const BankManagement: React.FC<IBankManagementProps> = ({ context }) => {
   const [formData, setFormData] = useState<IBankItem>({
 
     CustomerName: '',
-
     Email: '',
-
     PhoneNumber: 0,
-
     AccountType: '',
-
     Balance: 0,
-
     IsActive: false,
-
     Branch: '',
-
     DateOfJoining: ''
   });
 
