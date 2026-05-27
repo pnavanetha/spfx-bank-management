@@ -8,4 +8,5 @@ export interface IBankItem {
   IsActive: boolean;
   Branch: string;
   DateOfJoining: string;
+  
 }
