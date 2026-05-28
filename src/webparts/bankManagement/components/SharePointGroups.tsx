@@ -64,7 +64,7 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
 
   }, [sp]);
 
-  // GET ONLY GROUP ID 173
+  // GET ONLY GROUP ID 173 AND 175
 
   const getGroups = async (): Promise<void> => {
 
@@ -74,10 +74,10 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
         .web
         .siteGroups();
 
-      // FILTER ONLY 173 GROUP
+      // FILTER ONLY 173 AND 175 GROUPS
 
       const filteredGroups = response.filter(
-        (group) => group.Id === 173
+        (group) => group.Id === 173 || group.Id === 172 || group.Id === 170 || group.Id === 5
       );
 
       setGroups(filteredGroups);

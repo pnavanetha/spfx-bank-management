@@ -16,8 +16,10 @@ import '@pnp/sp/items';
 import { IBankManagementProps } from './IBankManagementProps';
 
 import { IBankItem } from './IBankItem';
+import { useNavigate } from 'react-router-dom';
 
 const BankCustomer: React.FC<IBankManagementProps> = ({ context }) => {
+  const navigate = useNavigate();
 
   const [sp, setSp] = useState<SPFI>();
 
@@ -92,6 +94,9 @@ const BankCustomer: React.FC<IBankManagementProps> = ({ context }) => {
 
   const editCustomer = (item: IBankItem): void => {
 
+    debugger;
+    console.log(item);
+
     setEditId(item.Id!);
 
     setFormData({
@@ -111,6 +116,8 @@ const BankCustomer: React.FC<IBankManagementProps> = ({ context }) => {
       Branch: item.Branch,
 
       DateOfJoining: item.DateOfJoining
+        ? item.DateOfJoining.split('T')[0]
+        : ''
     });
   };
 
@@ -145,6 +152,7 @@ const BankCustomer: React.FC<IBankManagementProps> = ({ context }) => {
             Branch: formData.Branch,
 
             DateOfJoining: formData.DateOfJoining
+
           });
 
         alert('Customer Updated Successfully');
@@ -204,13 +212,35 @@ const BankCustomer: React.FC<IBankManagementProps> = ({ context }) => {
     }
   };
 
-  
+
 
   return (
 
-    <div style={{ padding: '20px' }}>
+    <div style={{ 
+      padding: '20px',
+      // display: 'flex',
+      // justifyContent: 'space-between',
+      // alignItems: 'center',
+
+    }}>
+
+      <div>
 
       <h1>Bank Management</h1>
+      <span>
+        <button
+        onClick={() => navigate('/')}
+        style={{
+          padding: '10px 20px',
+          cursor: 'pointer'
+          // position: 'absolute',
+          // float: 'right'
+        }}
+      >
+        Back To Home
+      </button>
+      </span>
+      </div>
 
       <div style={{
         display: 'grid',
@@ -327,6 +357,7 @@ const BankCustomer: React.FC<IBankManagementProps> = ({ context }) => {
       })}>
         Clear
       </button>
+      
 
       <hr />
 

@@ -399,20 +399,18 @@
 import * as React from 'react';
 
 import AppRoutes from './AppRoutes';
-
 import { IBankManagementProps } from './IBankManagementProps';
 
 const BankManagement: React.FC<IBankManagementProps> = (props) => {
 
   return (
-
     <React.Fragment>
-
-      <AppRoutes {...props} />
-
+      <React.Suspense fallback={<div>Loading...</div>}>
+        <AppRoutes {...props} />        
+      </React.Suspense>
     </React.Fragment>
-
   );
+
 };
 
 export default BankManagement;
