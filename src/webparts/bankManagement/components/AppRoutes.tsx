@@ -9,6 +9,7 @@ import {
 import Home from './Home';
 import BankCustomer from './BankCustomer';
 import SharePointGroups from './SharePointGroups';
+import CustomerMasters from './CustomerMasters'
 
 import { IBankManagementProps } from './IBankManagementProps';
 
@@ -35,6 +36,10 @@ const AppRoutes: React.FC<IBankManagementProps> = (props) => {
         <Route
           path="/groups"
           element={<SharePointGroups {...props} />}
+        />
+        <Route
+          path="/customer-masters"
+          element={<CustomerMasters {...props} />}
         />
 
       </Routes>

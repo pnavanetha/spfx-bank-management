@@ -8,5 +8,11 @@ export interface IBankItem {
   IsActive: boolean;
   Branch: string;
   DateOfJoining: string;
-  
+}
+
+export interface IMasterItem {
+  Id?: number;
+  BranchCode: number;
+  BranchName: string;
+  BranchLocation: string;
 }

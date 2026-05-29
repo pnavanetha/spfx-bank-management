@@ -1,9 +1,6 @@
 import * as React from 'react';
 
-import {
-  useEffect,
-  useState
-} from 'react';
+import { useEffect, useState } from 'react';
 
 import { spfi, SPFI } from '@pnp/sp';
 
@@ -31,9 +28,11 @@ interface IUser {
 const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
 
   const navigate = useNavigate();
+
   const [sp, setSp] = useState<SPFI>();
-  const [groups, setGroups] = useState<IGroup[]>([]);
+  const [groups, setGroups] = useState<IGroup[]>([]); 
   const [users, setUsers] = useState<IUser[]>([]);
+   const [groupSelected, setGroupSelected] = useState(false);
 
   useEffect(() => {
     const spInstance = spfi().using(SPFx(context));
@@ -47,7 +46,7 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
 
   }, [sp]);
 
-// groups getting
+// all groups getting
   const getGroups = async (): Promise<void> => {
 
     try {
@@ -55,6 +54,8 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
       const response = await sp!
         .web
         .siteGroups();
+      setGroups(response);
+      console.log('Groups:', response);
 
 // groups filtered
 
@@ -63,27 +64,44 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
       // );
       // setGroups(filteredGroups);
 
-      const allowedGropIds = [173,172,170,5];
+      // ----
 
-      const filteredGroups = response.filter(group =>
-        allowedGropIds.includes(group.Id)
-      );
+      // const allowedGropIds = [173,172,170,5,6];
 
-      setGroups(filteredGroups);
-      console.log('Groups:', filteredGroups);    
+      // const filteredGroups = response.filter(group =>
+      //   allowedGropIds.includes(group.Id)
+      // );
+      // setGroups(filteredGroups);
+      // console.log('Groups:', filteredGroups);
+      
+      // for (const group of response) {
+
+      //   const users = await sp!
+      //   .web
+      //   .siteGroups
+      //   .getById(group.Id)
+      //   .users();
+
+      //   console.log('Group:', group.Title);
+      //   console.log('Users:', users);
+      // }
 
     } catch (error) {
 
       console.log(error);
     }
   };
-  
+
   //Loads users of clicked group.
   const getUsersByGroup = async (
     groupId: number
   ): Promise<void> => {
 
     try {
+
+      setGroupSelected(true);
+
+      setUsers([]);
 
       const response = await sp!
         .web
@@ -94,11 +112,14 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
       setUsers(response);
       console.log('Users:', response);
 
+
     } catch (error) {
 
       console.log(error);
     }
   };
+
+
 
   return (
 
@@ -193,20 +214,43 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
             User Emails
           </h2>
 
+         
           {
 
-            users.map((user) => (
+            users.length > 0 ? (
 
-              <div
-                key={user.Id}
-                style={{
-                  padding: '12px',
-                  borderBottom: '1px solid #ccc'
-                }}
-              >
-                {user.Email}
-              </div>
-            ))
+              users.map((user) => (
+
+                <div
+                  key={user.Id}
+                  style={{
+                    padding: '12px',
+                    borderBottom: '1px solid #ccc'
+                  }}
+                >
+                  {user.Email}
+                </div>
+
+              ))
+
+            ) : (
+
+              groupSelected && (
+
+                <div
+                  style={{
+                    padding: '20px',
+                    textAlign: 'center',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  Users not exist in this group
+                </div>
+
+              )
+
+            )
+
           }
 
         </div>

@@ -400,14 +400,15 @@ import * as React from 'react';
 
 import AppRoutes from './AppRoutes';
 import { IBankManagementProps } from './IBankManagementProps';
+import { Suspense } from 'react';
 
 const BankManagement: React.FC<IBankManagementProps> = (props) => {
 
   return (
     <React.Fragment>
-      <React.Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div>Loading...</div>}>
         <AppRoutes {...props} />        
-      </React.Suspense>
+      </Suspense>
     </React.Fragment>
   );
 
