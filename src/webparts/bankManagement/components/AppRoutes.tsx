@@ -20,21 +20,17 @@ const AppRoutes: React.FC<IBankManagementProps> = (props) => {
 
       <Routes>
 
-        {/* HOME PAGE */}
-
         <Route
           path="/"
           element={<Home />}
         />
 
-        {/* CUSTOMER PAGE */}
 
         <Route
           path="/customers"
           element={<BankCustomer {...props} />}
         />
 
-        {/* SHAREPOINT GROUPS */}
 
         <Route
           path="/groups"

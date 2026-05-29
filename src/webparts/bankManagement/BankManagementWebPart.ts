@@ -25,12 +25,14 @@ export default class BankManagementWebPart extends BaseClientSideWebPart<IBankMa
     const element: React.ReactElement<IBankManagementProps> = React.createElement(
   BankManagement,
   {
+ 
     description: this.properties.description,
     isDarkTheme: this._isDarkTheme,
     environmentMessage: this._environmentMessage,
     hasTeamsContext: !!this.context.sdks.microsoftTeams,
     userDisplayName: this.context.pageContext.user.displayName,
-    context: this.context
+    context: this.context,   
+   
   }
 );
     ReactDom.render(element, this.domElement);

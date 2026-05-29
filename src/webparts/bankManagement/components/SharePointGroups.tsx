@@ -15,6 +15,7 @@ import '@pnp/sp/site-groups';
 import { useNavigate } from 'react-router-dom';
 
 import { IBankManagementProps } from './IBankManagementProps';
+// import { group } from 'console';
 
 interface IGroup {
   Id: number;
@@ -30,42 +31,23 @@ interface IUser {
 const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
 
   const navigate = useNavigate();
-
-  // SHAREPOINT INSTANCE
-
   const [sp, setSp] = useState<SPFI>();
-
-  // GROUPS STATE
-
   const [groups, setGroups] = useState<IGroup[]>([]);
-
-  // USERS STATE
-
   const [users, setUsers] = useState<IUser[]>([]);
 
-  // INITIALIZE SHAREPOINT
-
   useEffect(() => {
-
     const spInstance = spfi().using(SPFx(context));
-
     setSp(spInstance);
-
   }, [context]);
 
-  // LOAD GROUPS
-
   useEffect(() => {
-
     if (sp) {
-
       getGroups();
     }
 
   }, [sp]);
 
-  // GET ONLY GROUP ID 173 AND 175
-
+// groups getting
   const getGroups = async (): Promise<void> => {
 
     try {
@@ -74,22 +56,29 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
         .web
         .siteGroups();
 
-      // FILTER ONLY 173 AND 175 GROUPS
+// groups filtered
 
-      const filteredGroups = response.filter(
-        (group) => group.Id === 173 || group.Id === 172 || group.Id === 170 || group.Id === 5
+      // const filteredGroups = response.filter(
+      //   (group) => group.Id === 173 || group.Id === 172 || group.Id === 170 || group.Id === 5
+      // );
+      // setGroups(filteredGroups);
+
+      const allowedGropIds = [173,172,170,5];
+
+      const filteredGroups = response.filter(group =>
+        allowedGropIds.includes(group.Id)
       );
 
       setGroups(filteredGroups);
+      console.log('Groups:', filteredGroups);    
 
     } catch (error) {
 
       console.log(error);
     }
   };
-
-  // GET USERS BASED ON GROUP
-
+  
+  //Loads users of clicked group.
   const getUsersByGroup = async (
     groupId: number
   ): Promise<void> => {
@@ -103,6 +92,7 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
         .users();
 
       setUsers(response);
+      console.log('Users:', response);
 
     } catch (error) {
 
@@ -114,7 +104,6 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
 
     <div style={{ padding: '20px' }}>
 
-      {/* HEADER */}
 
       <div
         style={{
@@ -138,8 +127,6 @@ const SharePointGroups: React.FC<IBankManagementProps> = ({ context }) => {
         </button>
 
       </div>
-
-      {/* MAIN CONTAINER */}
 
       <div
         style={{
